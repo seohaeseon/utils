@@ -120,7 +120,7 @@
 **11:06 CI 구성.** `.github/workflows/transit-arrival.yml`: 액션 4개를 커밋 SHA로 고정(SHA는 각 저장소의 태그를 직접 조회해 확인),
 권한 `contents: read`, wrapper 검증 → 테스트 → lint → 디버그/릴리스 빌드 → 체크섬 → 디버그 APK 업로드.
 
-**11:08 커밋.** 작업 브랜치에 커밋 1건(파일 49개: 앱 48개 + CI 워크플로, 루트 README에 안내 한 단락 추가).
+**11:08 커밋.** 작업 브랜치에 커밋 1건(파일 49개: 앱 프로젝트 47개, CI 워크플로 1개, 루트 README 안내 한 단락).
 
 **11:09 푸시 실패(미해결).** `git push`가 HTTP 403으로 거부됨: "Claude doesn't have GitHub access to seohaeseon/utils".
 원격 읽기(fetch, ls-remote)는 되지만 쓰기 권한이 없음. 4회 재시도 모두 동일. 쓰기 권한으로 저장소를 다시 연결하는 시도는
