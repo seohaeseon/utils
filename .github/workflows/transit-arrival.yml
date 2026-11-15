@@ -1,0 +1,55 @@
+name: transit-arrival
+
+on:
+  push:
+    paths:
+      - 'transit-arrival/**'
+      - '.github/workflows/transit-arrival.yml'
+  workflow_dispatch:
+
+# 최소 권한: 저장소 읽기만. 시크릿을 사용하지 않는다.
+permissions:
+  contents: read
+
+concurrency:
+  group: transit-arrival-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: transit-arrival
+    steps:
+      # 모든 액션은 태그가 아닌 커밋 SHA로 고정한다(태그 바꿔치기 방어).
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # gradle-wrapper.jar가 Gradle 공식 배포본과 같은지 검증
+      - uses: gradle/actions/wrapper-validation@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+
+      - uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      # 의존성 해시 검증(gradle/verification-metadata.xml)은 Gradle이 자동으로 수행한다.
+      - name: Unit tests, lint, build
+        run: ./gradlew --no-daemon --stacktrace :app:testDebugUnitTest :app:lintDebug :app:assembleDebug :app:assembleRelease
+
+      - name: Checksums
+        run: |
+          cd app/build/outputs/apk
+          sha256sum debug/*.apk release/*.apk | tee SHA256SUMS.txt
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: transit-arrival-apk
+          path: |
+            transit-arrival/app/build/outputs/apk/debug/*.apk
+            transit-arrival/app/build/outputs/apk/SHA256SUMS.txt
+          retention-days: 14
+          if-no-files-found: error

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- filterTouchesWhenObscured: 다른 앱이 화면을 덮은 상태의 터치는 무시(탭재킹 방어) -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:filterTouchesWhenObscured="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/widget_bg"
+            android:padding="14dp"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_refresh"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/refresh_once" />
+
+            <Button
+                android:id="@+id/btn_live"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/live_start" />
+        </LinearLayout>
+
+        <TextView style="@style/Header" android:text="@string/h_mode" />
+
+        <RadioGroup
+            android:id="@+id/mode_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/mode_fixed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mode_fixed" />
+
+            <RadioButton
+                android:id="@+id/mode_nearest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mode_nearest" />
+        </RadioGroup>
+
+        <TextView style="@style/Header" android:text="@string/h_stops" />
+
+        <LinearLayout
+            android:id="@+id/stop_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <Button android:id="@+id/add_tago" style="@style/Wide" android:text="@string/add_tago" />
+        <Button android:id="@+id/add_subway" style="@style/Wide" android:text="@string/add_subway" />
+        <Button android:id="@+id/add_seoul_bus" style="@style/Wide" android:text="@string/add_seoul_bus" />
+
+        <TextView style="@style/Header" android:text="@string/h_keys" />
+        <Button android:id="@+id/key_tago" style="@style/Wide" />
+        <Button android:id="@+id/key_subway" style="@style/Wide" />
+        <Button android:id="@+id/key_seoul_bus" style="@style/Wide" />
+
+        <TextView style="@style/Header" android:text="@string/h_options" />
+
+        <CheckBox
+            android:id="@+id/opt_lock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/opt_lock" />
+
+        <CheckBox
+            android:id="@+id/opt_gps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/opt_gps" />
+
+        <Button android:id="@+id/btn_minutes" style="@style/Wide" />
+
+        <TextView style="@style/Header" android:text="@string/h_privacy" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/privacy_note" />
+
+        <Button android:id="@+id/btn_wipe" style="@style/Wide" android:text="@string/wipe" />
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,71 @@
+plugins {
+    id 'com.android.application'
+}
+
+// 릴리스 서명 정보는 저장소에 넣지 않는다. 사용자가 로컬에 만든 keystore.properties(.gitignore 대상)에서만 읽는다.
+def keystoreProps = new Properties()
+def keystoreFile = rootProject.file('keystore.properties')
+if (keystoreFile.exists()) {
+    keystoreFile.withInputStream { keystoreProps.load(it) }
+}
+
+android {
+    namespace 'kr.local.transitglance'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'kr.local.transitglance'
+        minSdk 26
+        targetSdk 36
+        versionCode 1
+        versionName '1.0.0'
+    }
+
+    signingConfigs {
+        release {
+            if (keystoreFile.exists()) {
+                storeFile rootProject.file(keystoreProps['storeFile'])
+                storePassword keystoreProps['storePassword']
+                keyAlias keystoreProps['keyAlias']
+                keyPassword keystoreProps['keyPassword']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            debuggable false
+            // APK에 git 커밋 정보를 넣지 않는다.
+            vcsInfo { include false }
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (keystoreFile.exists()) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        abortOnError true
+        checkReleaseBuilds true
+    }
+
+    // APK 안에 의존성 목록 블롭(Google Play용 메타데이터)을 넣지 않는다.
+    dependenciesInfo {
+        includeInApk false
+        includeInBundle false
+    }
+}
+
+// 앱 실행 코드에는 외부 라이브러리가 하나도 없다(Android 프레임워크만 사용).
+// 아래는 PC에서 돌리는 단위 테스트 전용이며 APK에 포함되지 않는다.
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.json:json:20260814'
+}
